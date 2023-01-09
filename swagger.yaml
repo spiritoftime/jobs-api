@@ -1,10 +1,10 @@
 openapi: 3.0.0
 info:
-  title: Jobs API
+  title: jobs api
   contact: {}
-  version: '1.0'
+  version: "1.0"
 servers:
-  - url: https://jobs-api-06.herokuapp.com/api/v1
+  - url: http://example.com
     variables: {}
 paths:
   /auth/register:
@@ -15,19 +15,24 @@ paths:
       operationId: RegisterUser
       parameters: []
       requestBody:
-        description: ''
+        description: ""
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RegisterUserRequest'
+              allOf:
+                - $ref: "#/components/schemas/RegisterUserRequest"
+                - example:
+                    name: burp
+                    email: burp@gmail.com
+                    password: secret
             example:
-              name: bob
-              email: bob@gmail.com
+              name: burp
+              email: burp@gmail.com
               password: secret
         required: true
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           headers: {}
       deprecated: false
       security: []
@@ -39,106 +44,128 @@ paths:
       operationId: LoginUser
       parameters: []
       requestBody:
-        description: ''
+        description: ""
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LoginUserRequest'
+              allOf:
+                - $ref: "#/components/schemas/LoginUserRequest"
+                - example:
+                    email: derp@gmail.com
+                    password: secret
             example:
-              email: susan@gmail.com
+              email: derp@gmail.com
               password: secret
         required: true
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           headers: {}
       deprecated: false
       security: []
   /jobs:
     post:
       tags:
-        - Jobs
+        - Job
       summary: Create Job
       operationId: CreateJob
       parameters: []
       requestBody:
-        description: ''
+        description: ""
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateJobRequest'
+              allOf:
+                - $ref: "#/components/schemas/CreateJobRequest"
+                - example:
+                    company: king
+                    position: back-end developer
             example:
-              company: google
-              position: front-end developer
+              company: king
+              position: back-end developer
         required: true
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           headers: {}
       deprecated: false
+      security:
+        - bearer: []
     get:
       tags:
-        - Jobs
-      summary: Get All Jobs
-      operationId: GetAllJobs
+        - Job
+      summary: Get jobs created by user
+      operationId: Getjobscreatedbyuser
       parameters: []
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           headers: {}
       deprecated: false
+      security:
+        - bearer: []
   /jobs/{id}:
     parameters:
       - in: path
         name: id
         schema:
-          type: string
+          type: integer
         required: true
-        description: The job ID
+        description: The jobs ID
     get:
       tags:
-        - Jobs
+        - Job
       summary: Get Single Job
       operationId: GetSingleJob
       parameters: []
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           headers: {}
       deprecated: false
-
+      security:
+        - bearer: []
     patch:
       tags:
-        - Jobs
+        - Job
       summary: Update Job
       operationId: UpdateJob
       parameters: []
       requestBody:
-        description: ''
+        description: ""
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateJobRequest'
+              allOf:
+                - $ref: "#/components/schemas/UpdateJobRequest"
+                - example:
+                    company: queen
+                    position: back-end developer
             example:
-              company: random
-              position: intern
+              company: queen
+              position: back-end developer
         required: true
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           headers: {}
       deprecated: false
+      security:
+        - bearer: []
+
     delete:
       tags:
-        - Jobs
+        - Job
       summary: Delete Job
       operationId: DeleteJob
       parameters: []
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           headers: {}
       deprecated: false
+      security:
+        - bearer: []
 components:
   schemas:
     RegisterUserRequest:
@@ -156,8 +183,8 @@ components:
         password:
           type: string
       example:
-        name: bob
-        email: bob@gmail.com
+        name: burp
+        email: burp@gmail.com
         password: secret
     LoginUserRequest:
       title: LoginUserRequest
@@ -171,7 +198,7 @@ components:
         password:
           type: string
       example:
-        email: susan@gmail.com
+        email: derp@gmail.com
         password: secret
     CreateJobRequest:
       title: CreateJobRequest
@@ -185,8 +212,8 @@ components:
         position:
           type: string
       example:
-        company: google
-        position: front-end developer
+        company: king
+        position: back-end developer
     UpdateJobRequest:
       title: UpdateJobRequest
       required:
@@ -199,16 +226,17 @@ components:
         position:
           type: string
       example:
-        company: random
-        position: intern
+        company: queen
+        position: back-end developer
   securitySchemes:
-    httpBearer:
+    bearer:
       type: http
       scheme: bearer
-security:
-  - httpBearer: []
+security: []
 tags:
+  - name: Misc
+    description: ""
   - name: Auth
-    description: ''
-  - name: Jobs
-    description: ''
+    description: ""
+  - name: Job
+    description: ""
